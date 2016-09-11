@@ -16,6 +16,8 @@
 		2204E9CF1D848C270083DD2F /* SpeechInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204E9CE1D848C270083DD2F /* SpeechInput.swift */; };
 		2204E9D11D848C350083DD2F /* SpeechOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204E9D01D848C350083DD2F /* SpeechOutput.swift */; };
 		2204E9D61D84A90D0083DD2F /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204E9D51D84A90D0083DD2F /* AudioEngine.swift */; };
+		2204E9D91D8508B80083DD2F /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204E9D81D8508B80083DD2F /* Todo.swift */; };
+		2204E9DC1D8509970083DD2F /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204E9DB1D8509970083DD2F /* DateFormat.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +44,8 @@
 		2204E9CE1D848C270083DD2F /* SpeechInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpeechInput.swift; path = SpeechRecognition/SpeechInput.swift; sourceTree = "<group>"; };
 		2204E9D01D848C350083DD2F /* SpeechOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechOutput.swift; sourceTree = "<group>"; };
 		2204E9D51D84A90D0083DD2F /* AudioEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioEngine.swift; path = AudioEngine/AudioEngine.swift; sourceTree = "<group>"; };
+		2204E9D81D8508B80083DD2F /* Todo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Todo.swift; path = Models/Todo.swift; sourceTree = "<group>"; };
+		2204E9DB1D8509970083DD2F /* DateFormat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DateFormat.swift; path = Helpers/DateFormat.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,8 +70,8 @@
 			isa = PBXGroup;
 			children = (
 				2204E9AB1D848BD20083DD2F /* Spreken */,
-				2204E9C01D848BD20083DD2F /* SprekenTests */,
 				2204E9AA1D848BD20083DD2F /* Products */,
+				2204E9C01D848BD20083DD2F /* SprekenTests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -83,6 +87,8 @@
 		2204E9AB1D848BD20083DD2F /* Spreken */ = {
 			isa = PBXGroup;
 			children = (
+				2204E9DA1D8509570083DD2F /* Helpers */,
+				2204E9D71D85089B0083DD2F /* Models */,
 				2204E9D21D84A8E70083DD2F /* AudioEngine */,
 				2204E9CC1D848BE00083DD2F /* SpeechRecognition */,
 				2204E9AC1D848BD20083DD2F /* AppDelegate.swift */,
@@ -119,6 +125,22 @@
 				2204E9D51D84A90D0083DD2F /* AudioEngine.swift */,
 			);
 			name = AudioEngine;
+			sourceTree = "<group>";
+		};
+		2204E9D71D85089B0083DD2F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2204E9D81D8508B80083DD2F /* Todo.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		2204E9DA1D8509570083DD2F /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				2204E9DB1D8509970083DD2F /* DateFormat.swift */,
+			);
+			name = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -227,10 +249,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				2204E9AF1D848BD20083DD2F /* ViewController.swift in Sources */,
+				2204E9D91D8508B80083DD2F /* Todo.swift in Sources */,
 				2204E9AD1D848BD20083DD2F /* AppDelegate.swift in Sources */,
 				2204E9D61D84A90D0083DD2F /* AudioEngine.swift in Sources */,
 				2204E9D11D848C350083DD2F /* SpeechOutput.swift in Sources */,
 				2204E9CF1D848C270083DD2F /* SpeechInput.swift in Sources */,
+				2204E9DC1D8509970083DD2F /* DateFormat.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

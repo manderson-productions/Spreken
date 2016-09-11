@@ -9,12 +9,15 @@
 import UIKit
 import AVFoundation
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    var speechInput: SpeechInput!
-    var speechOutput: SpeechOutput!
+    fileprivate static let kTodoCellIdentifier = "todoCellIdentifier"
+    fileprivate var speechInput: SpeechInput!
+    fileprivate var speechOutput: SpeechOutput!
+    fileprivate var todos = [Todo]()
 
     @IBOutlet weak var recordButton: UIButton!
+    @IBOutlet weak var tableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,13 +34,13 @@ class ViewController: UIViewController {
                     self.recordButton.isEnabled = true
                     break
                 case .denied:
-                    print("Authorized")
+                    print("Denied")
                     break
                 case .notDetermined:
-                    print("Authorized")
+                    print("Not Determined")
                     break
                 case .restricted:
-                    print("Authorized")
+                    print("Restricted")
                     break
                 }
             }
@@ -51,10 +54,6 @@ class ViewController: UIViewController {
         }
     }
 
-    fileprivate func didRecognizeSpeech(bestGuess: String) {
-        self.speechOutput.speak(string: bestGuess)
-    }
-
     // MARK: IBActions
 
     @IBAction func beginRecording(_ sender: UIButton) {
@@ -62,11 +61,55 @@ class ViewController: UIViewController {
         if !result {
             print("Some problem occurred with recognition startup...")
         }
-        self.speechInput.recognitionHandler = self.didRecognizeSpeech
+        self.speechInput.recognitionHandler = { [weak self] bestGuess in
+            guard let strongself = self else { return }
+            strongself.speechOutput.speak(string: bestGuess)
+            strongself.todos.insert(Todo(title: bestGuess, timestamp: Date()), at: 0)
+            let indexPath = IndexPath(row: 0, section: 0)
+            strongself.tableView.insertRows(at: [indexPath], with: .automatic)
+        }
     }
 
     @IBAction func endRecording(_ sender: UIButton) {
         self.speechInput.endRecognition()
+    }
+
+    // MARK: UITableViewDelegate/Datasource
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: ViewController.kTodoCellIdentifier, for: indexPath)
+        let todo = todos[indexPath.row]
+        cell.textLabel?.text = todo.title
+        cell.detailTextLabel?.text = DateFormat.sharedInstance.stringFromDate(date: todo.timestamp)
+
+        return cell
+    }
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("Selected row at: \(indexPath)")
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.todos.count
+    }
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            self.todos.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+
+    func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
     }
 }
 
