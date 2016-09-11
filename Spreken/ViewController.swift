@@ -54,6 +54,24 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
 
+    fileprivate func setTableViewEditing(editing: Bool) {
+        self.tableView.setEditing(editing, animated: true)
+    }
+
+    // MARK: LongPressGesture
+
+    func longPressGestureHandler(recognizer: UILongPressGestureRecognizer) {
+        if recognizer.state == .began {
+            self.setTableViewEditing(editing: !self.tableView.isEditing)
+        }
+    }
+
+    // MARK: Object Control
+
+    fileprivate func shouldSetEditingMode(string: String) -> Bool {
+        return string.lowercased() == "edit"
+    }
+
     // MARK: IBActions
 
     @IBAction func beginRecording(_ sender: UIButton) {
@@ -63,6 +81,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         self.speechInput.recognitionHandler = { [weak self] bestGuess in
             guard let strongself = self else { return }
+
+            if strongself.shouldSetEditingMode(string: bestGuess) {
+                strongself.tableView.setEditing(!strongself.tableView.isEditing, animated: true)
+                return
+            }
             strongself.speechOutput.speak(string: bestGuess)
             strongself.todos.insert(Todo(title: bestGuess, timestamp: Date()), at: 0)
             let indexPath = IndexPath(row: 0, section: 0)
@@ -80,7 +103,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let todo = todos[indexPath.row]
         cell.textLabel?.text = todo.title
         cell.detailTextLabel?.text = DateFormat.sharedInstance.stringFromDate(date: todo.timestamp)
-
+        let longpressGesture = UILongPressGestureRecognizer(target: self, action: #selector(longPressGestureHandler(recognizer:)))
+        longpressGesture.minimumPressDuration = 0.4
+        longpressGesture.cancelsTouchesInView = false
+        cell.addGestureRecognizer(longpressGesture)
         return cell
     }
 
@@ -105,10 +131,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
 
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-
-    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
     }
 }
