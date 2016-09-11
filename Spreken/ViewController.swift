@@ -103,10 +103,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let todo = todos[indexPath.row]
         cell.textLabel?.text = todo.title
         cell.detailTextLabel?.text = DateFormat.sharedInstance.stringFromDate(date: todo.timestamp)
-        let longpressGesture = UILongPressGestureRecognizer(target: self, action: #selector(longPressGestureHandler(recognizer:)))
-        longpressGesture.minimumPressDuration = 0.4
-        longpressGesture.cancelsTouchesInView = false
-        cell.addGestureRecognizer(longpressGesture)
+
         return cell
     }
 
@@ -128,6 +125,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             self.todos.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
+    }
+
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let moveFrom = self.todos.remove(at: sourceIndexPath.row)
+        self.todos.insert(moveFrom, at: destinationIndexPath.row)
+    }
+
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
     }
 
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
